@@ -44,6 +44,10 @@ const showProducts = async () => {
     return await Product.find()
 }
 
+const showAuthors = async () => {
+    return await Product.distinct("autor")
+}
+
 const generateError = (message: string, name: string) => {
 const error = new Error(message)
 error.name = name
@@ -200,7 +204,8 @@ const main = async () => {
                 readOne = para leer un producto
                 create data = para crear un producto
                 update id data = para actualizar un producto
-                delete id = para borrar un producto`
+                delete id = para borrar un producto
+                autor = para ver solo los autores`
             )
             break
      case "read":
@@ -218,6 +223,9 @@ const main = async () => {
                 case "delete":
                     console.log(await deleteProduct(args[1]))
                     break
+                    case "autor":
+                        console.log(await showAuthors())
+                        break
                     default:
                         console.log("commands; <read | create | update | delete>")
     }
