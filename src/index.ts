@@ -243,7 +243,7 @@ const main = async () => {
                         console.log(await showAuthors(args[1]))
                         break
                     default:
-                        console.log("commands; <read | create | update | delete>")
+                        console.log("commands; <read | readOne | create | update | delete | autor>")
     }
     await mongoose.disconnect()
 }
