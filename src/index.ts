@@ -23,6 +23,7 @@ interface IProduct {
     price: number
     stock: number
     category: string
+    autor: string
 }
 
 // creación del Schema para el producto (molde de una torta)
@@ -30,7 +31,8 @@ const productSchema = new mongoose.Schema<IProduct>({
     name: String,
     price: Number,
     stock: Number,
-    category: String
+    category: String,
+    autor: String
 },{
     versionKey: false
 })
@@ -85,7 +87,8 @@ const createProduct = async (data: string[]) => {
      name: "producto",
     price: 0,
     stock: 0,
-    category: "sin categoria"
+    category: "sin categoria",
+    autor: "sin autor"
 }
 
 if(data[0]?.split("=")[0] !== "name" || !data[0]?.split("=")[1]){
@@ -111,6 +114,9 @@ for (let i = 0; i < data.length; i++) {
                 case "category":
                     newProduct.category = value ? value : newProduct.category
                     break
+                    case "autor":
+                        newProduct.autor = value ? value : newProduct.autor
+                        break
 
                     default:
                         throw generateError("Invalid data to create product", "InvalidData")
@@ -146,6 +152,9 @@ try {
                 break
                  case "category":
                 data.category = value
+                break
+                 case "autor":
+                data.autor = value
                 break
                 default:
                     throw generateError("Invalid data to update product", "InvalidData")
