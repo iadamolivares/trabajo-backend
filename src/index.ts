@@ -44,8 +44,23 @@ const showProducts = async () => {
     return await Product.find()
 }
 
-const showAuthors = async () => {
-    return await Product.distinct("autor")
+const showAuthors = async (id: string | undefined) => {
+    try {
+        if (!id) {
+            return await Product.distinct("autor")
+        }
+
+        const foundProduct = await Product.findById(id, {autor: 1, _id: 0})
+
+        if (!foundProduct) {
+            throw generateError("Product not found", "ProductNotFound")
+        }
+
+        return foundProduct.autor
+    } catch (error) {
+        const e = error as Error
+        return handleError(e)
+    }
 }
 
 const generateError = (message: string, name: string) => {
@@ -205,7 +220,8 @@ const main = async () => {
                 create data = para crear un producto
                 update id data = para actualizar un producto
                 delete id = para borrar un producto
-                autor = para ver solo los autores`
+                autor = para ver solo los autores
+                autor id = para ver el autor de un producto`
             )
             break
      case "read":
@@ -224,7 +240,7 @@ const main = async () => {
                     console.log(await deleteProduct(args[1]))
                     break
                     case "autor":
-                        console.log(await showAuthors())
+                        console.log(await showAuthors(args[1]))
                         break
                     default:
                         console.log("commands; <read | create | update | delete>")
